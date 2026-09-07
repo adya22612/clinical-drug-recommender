@@ -1,0 +1,32 @@
+# Secrets - the repo currently ships two committed .env files. Rotate any
+# credential that was ever in them.
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Data - 11MB of cached API responses and the Synthea export do not belong
+# in git. Regenerate with scripts/ingest_data.py.
+data/
+services/data/
+*.zip
+
+# Tooling
+.vscode/
+.idea/
+.DS_Store
+.env
+data/
+services/data/
+*.zip
+**/.venv/
+**/__pycache__/

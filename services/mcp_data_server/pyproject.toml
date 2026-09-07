@@ -1,0 +1,37 @@
+[project]
+name = "mcp-data-server"
+version = "0.1.0"
+description = "MCP Data Server for Clinical Drug Recommendations"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.1.2,<2",
+    "motor>=3.3.2",        # Async MongoDB driver
+    "chromadb>=0.4.24",
+    "pydantic>=2.5.3",
+    "pydantic-settings>=2.1.0",
+    "uvicorn>=0.27.0",
+    "starlette>=0.36.3",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "requests>=2.31.0",
+    "sentence-transformers>=2.6.0",   # explicit: the embedding function is pinned
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.4.0",
+    "mypy>=1.9.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+managed = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]

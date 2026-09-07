@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "timestamp": "20260830_082114",
+    "cases_attempted": 3,
+    "cases_completed": 3,
+    "cases_errored": 0,
+    "cases_passed": 3,
+    "pass_rate": 1.0,
+    "findings_by_check": {}
+  },
+  "results": [
+    {
+      "case_id": "gen_0000",
+      "patient_id": "1d604da9-9a81-4ba9-80c2-de3375d59b40",
+      "condition": "Chronic sinusitis (disorder)",
+      "recommended_drugs": [],
+      "candidates_retrieved": 0,
+      "tool_calls": 6,
+      "failed_tool_calls": 2,
+      "findings": [],
+      "passed": true
+    },
+    {
+      "case_id": "gen_0004",
+      "patient_id": "bfb6537b-535a-4f31-9a56-073220f96a17",
+      "condition": "Chronic sinusitis (disorder)",
+      "recommended_drugs": [],
+      "candidates_retrieved": 0,
+      "tool_calls": 5,
+      "failed_tool_calls": 1,
+      "findings": [],
+      "passed": true
+    },
+    {
+      "case_id": "gen_0005",
+      "patient_id": "bfb6537b-535a-4f31-9a56-073220f96a17",
+      "condition": "Miscarriage in first trimester",
+      "recommended_drugs": [],
+      "candidates_retrieved": 0,
+      "tool_calls": 8,
+      "failed_tool_calls": 4,
+      "findings": [],
+      "passed": true
+    }
+  ]
+}

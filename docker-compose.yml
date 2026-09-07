@@ -1,0 +1,95 @@
+# `version:` removed - obsolete since Compose v2 and emits a warning.
+name: clinicalrecommneder
+networks:
+  clinical_net:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  chroma_data:
+  ollama_data:
+
+services:
+  # ----------------------------------------------------
+  # INFRASTRUCTURE TIER
+  # ----------------------------------------------------
+  mongodb:
+    image: mongo:7
+    container_name: clinical_mongo
+    restart: unless-stopped
+    # Published so scripts/ingest_data.py can run from the host. Without this
+    # the ingestion has no route to the database at all.
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [clinical_net]
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: clinical_chroma
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    healthcheck:
+      test: ["CMD", "/bin/bash", "-c", "exec 3<>/dev/tcp/localhost/8000"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [clinical_net]
+
+  
+  # ----------------------------------------------------
+  # APPLICATION TIER
+  # ----------------------------------------------------
+  mcp_data_server:
+    build:
+      context: ./services/mcp_data_server
+    container_name: mcp_data_server
+    restart: unless-stopped
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB_NAME=${MONGO_DB_NAME:-clinical_db}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - MCP_PORT=8000
+    depends_on:
+      mongodb: {condition: service_healthy}
+      chromadb: {condition: service_healthy}
+    networks: [clinical_net]
+
+  orchestrator:
+    build:
+      context: ./services/orchestrator
+    container_name: orchestrator
+    restart: unless-stopped
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - MCP_SERVER_URL=http://mcp_data_server:8000/sse
+      - ORCHESTRATOR_MODEL=${ORCHESTRATOR_MODEL:-llama3.2:3b}
+      - CLINICAL_MODEL=${CLINICAL_MODEL:-biomistral}
+    depends_on:
+      - mcp_data_server
+    networks: [clinical_net]
+    ports:
+      - "8080:8000"
+
+  frontend:
+    build:
+      context: ./services/frontend
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "8501:8501"   # only the UI is exposed for normal use
+    environment:
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+    depends_on:
+      - orchestrator
+    networks: [clinical_net]
