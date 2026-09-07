@@ -9,7 +9,6 @@
 [![MCP](https://img.shields.io/badge/MCP-Tool%20Server-FF6B35?style=flat)](https://modelcontextprotocol.io)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Orchestrator-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat&logo=docker&logoColor=white)](https://docker.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat)](LICENSE)
 
 *Patient data and inference stay fully local. No data leaves the machine.*
 
