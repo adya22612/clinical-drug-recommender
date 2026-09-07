@@ -362,12 +362,6 @@ uv run python run_ragas.py --limit 10
 
 ---
 
-## License
-
-MIT. Synthea data is open and unrestricted. openFDA data is US public domain.
-
----
-
 <div align="center">
 
 </div>
